@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    
+    <title>Checkout</title>
+</head>
+<body>
+    <div class="container">
+      <br>
+      <h2>Tus Ordenes de Compra</h2>
+      <div class="row">
+        <div class="col-md-12">
+            <ul class="list-group" id="item_list">
+                  
+            </ul>
+        </div>
+      </div>
+      <br>
+      <h2>Tus Datos Personales</h2>
+      <div class="row">
+        <div class="col-md-12">
+          <form method="POST">
+            {% csrf_token %}
+              <input type="hidden" id="items" name="items">
+              <div class="form-row">
+                <div class="form-group col-md-6">
+                  <label for="inputNameF">First Name</label>
+                  <input id="Fname" name="Fname" type="text" class="form-control" placeholder="First name">
+                </div>
+                <div class="form-group col-md-6">
+                  <label for="inputNameL">Last Name</label>
+                  <input id="Lname" name="Lname" type="text" class="form-control" placeholder="Last name">
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group col-md-6">
+                  <label for="inputEmail">Email</label>
+                  <input id="email" name="email" type="email" class="form-control" id="inputEmail" placeholder="name@email.com">
+                </div>
+                <div class="form-group col-md-6">
+                  <label for="inputNumPhone">Number Phone</label>
+                  <input id="phone" name="phone" type="text" class="form-control" id="inputNumPhone" placeholder="Number Phone">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="inputAddress">Address</label>
+                <input id="address" name="address" type="text" class="form-control" id="inputAddress" placeholder="1234 Main St">
+              </div>
+              <div class="form-row">
+                <div class="form-group col-md-6">
+                  <label for="inputCity">City</label>
+                  <input id="city" name="city" type="text" class="form-control" id="inputCity">
+                </div>
+                <div class="form-group col-md-4">
+                  <label for="inputCountry">Coutry</label>
+                  <select id="inputCountry" name="country" class="form-control">
+                    <option selected>Choose...</option>
+                    <option>Argentina</option> 
+                    <option>Bolivia</option>
+                    <option>Brasil</option>
+                    <option>Chile</option>
+                    <option>Colombia</option>
+                    <option>Costa Rica</option> 
+                    <option>Cuba</option> 
+                    <option>Ecuador</option>
+                    <option>El Salvador</option> 
+                    <option>Estados Unidos</option> 
+                    <option>España</option>
+                    <option>Guatemala</option> 
+                    <option>Mexico</option>
+                    <option>Nicaragua</option>
+                    <option>Panama</option>    
+                    <option>Paraguay</option> 
+                    <option>Peru</option>
+                    <option>Puerto Rico</option> 
+                    <option>Republica Dominicana</option>  
+                    <option>Uruguay</option> 
+                    <option>Venezuela</option>   
+                  </select>
+                </div>
+                <div class="form-group col-md-2">
+                  <label for="inputZip">Zip Code</label>
+                  <input id="zipcode" name="zipcode" type="text" class="form-control" id="inputZip">
+                </div>
+                <div class="form-group col-md-2">
+                  <label for="inputZip">Amount to be paid</label>
+                  <input readonly="" type="text" class="form-control" id="total" name="total">
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" id="gridCheck">
+                  <label class="form-check-label" for="gridCheck">
+                    Agree
+                  </label>
+                </div>
+              </div>
+              <button type="submit" class="btn btn-primary">Place Order</button>
+          </form>
+        </div>
+      </div>
+    </div>
+</body>
+<script type="text/javascript">
+  if (localStorage.getItem('cart')==null){
+    var cart = {};
+  }
+  else{
+    cart = JSON.parse(localStorage.getItem('cart'));
+  }
+  let total = 0;
+  for(item in cart){
+    let name = cart[item][1];
+    let quantity = cart[item][0];
+    let price = cart[item][2];
+    total = total + cart[item][2];
+    
+    itemString = `<li class="list-group-item"><span class="">${quantity}</span> of ${name} <span class="badge badge-warning badge-pill">${price}</span></li>`;
+    $('#item_list').append(itemString);
+  }
+totalPrice =  `<li class = "list-group-item d-flex justify-content-between align-items-center"><b>Total Price</b>${total}</li>`
+$('#total').val(total);
+$('#item_list').append(totalPrice);
+$('#items').val(JSON.stringify(cart));
+</script>
+</html> 
